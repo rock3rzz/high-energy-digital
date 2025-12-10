@@ -1,13 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Cursor: React.FC = () => {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
+  const cursorRef = useRef<HTMLDivElement>(null);
   const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
+    let frameId: number;
+    
     const moveCursor = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      // Use requestAnimationFrame to throttle updates to the screen refresh rate
+      // and update the DOM directly to avoid React re-renders
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(() => {
+        if (cursorRef.current) {
+          cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        }
+      });
     };
+
     const mouseDown = () => setClicked(true);
     const mouseUp = () => setClicked(false);
 
@@ -19,6 +29,7 @@ const Cursor: React.FC = () => {
       window.removeEventListener('mousemove', moveCursor);
       window.removeEventListener('mousedown', mouseDown);
       window.removeEventListener('mouseup', mouseUp);
+      cancelAnimationFrame(frameId);
     };
   }, []);
 
@@ -32,8 +43,9 @@ const Cursor: React.FC = () => {
       
       {/* Crosshair Lines */}
       <div 
-        className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:block mix-blend-difference"
-        style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
+        ref={cursorRef}
+        className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:block mix-blend-difference will-change-transform"
+        style={{ transform: 'translate(-100px, -100px)' }}
       >
         {/* Horizontal Line */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-[1px] bg-white/50" />

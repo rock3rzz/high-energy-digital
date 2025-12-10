@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import LiquidEther from './components/ui/LiquidEther';
@@ -10,37 +10,46 @@ import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Cursor from './components/ui/Cursor';
-import { Noise } from './components/ui/Noise';
-import GradualBlur from './components/ui/GradualBlur';
 import { ScrollToTop } from './components/ui/ScrollToTop';
 
+// Optimized MouseSpotlight - Reduced radius and complexity
 const MouseSpotlight = () => {
-  const [pos, setPos] = useState({ x: -500, y: -500 });
+  const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let frameId: number;
     const onMove = (e: MouseEvent) => {
-      setPos({ x: e.clientX, y: e.clientY });
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(() => {
+        if (divRef.current) {
+          // Smaller radius, simpler gradient for performance
+          divRef.current.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(222, 105, 203, 0.04), transparent 40%)`;
+        }
+      });
     };
     window.addEventListener('mousemove', onMove);
-    return () => window.removeEventListener('mousemove', onMove);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      cancelAnimationFrame(frameId);
+    }
   }, []);
 
   return (
     <div 
-      className="fixed inset-0 z-[1] pointer-events-none mix-blend-screen transition-opacity duration-300"
+      ref={divRef}
+      className="fixed inset-0 z-[1] pointer-events-none mix-blend-screen"
       style={{ 
-        background: `radial-gradient(800px circle at ${pos.x}px ${pos.y}px, rgba(222, 105, 203, 0.06), transparent 50%)` 
+        background: `radial-gradient(600px circle at 50% 50%, rgba(222, 105, 203, 0.04), transparent 40%)` 
       }}
     />
   );
 };
 
 const App: React.FC = () => {
-  // Default and lock to the Dark/Pink theme
-  const [themeColors, setThemeColors] = useState(['#000000', '#DE69CB', '#00f0ff']); 
+  // Memoize colors to prevent reference changes
+  const themeColors = useMemo(() => ['#000000', '#DE69CB', '#00f0ff'], []);
 
   useEffect(() => {
-    // Force dark mode
     document.documentElement.classList.add('dark');
   }, []);
 
@@ -48,33 +57,31 @@ const App: React.FC = () => {
     <>
       <div className="min-h-screen bg-[#030303] text-white overflow-x-hidden font-sans selection:bg-brand-neon selection:text-white relative">
         
-        {/* LAYER 1: Liquid Shader */}
+        {/* LAYER 1: Liquid Shader - HEAVILY OPTIMIZED */}
         <div className="fixed inset-0 z-0">
           <LiquidEther 
               className="w-full h-full"
               colors={themeColors}
-              mouseForce={20} 
-              cursorSize={250} 
-              viscous={30} 
-              dt={0.01} 
-              autoSpeed={0.2} 
+              mouseForce={15}      // Reduced force
+              cursorSize={200}     // Smaller cursor influence
+              viscous={20} 
+              dt={0.015} 
+              autoSpeed={0.1}      // Slower auto movement
+              resolution={0.2}     // CRITICAL: 0.2 resolution = 1/25th the pixel processing of 1.0
+              iterationsViscous={10} // Reduced from 32
+              iterationsPoisson={10} // Reduced from 32
           />
         </div>
 
-        {/* LAYER 2: Lighter Frost Glass */}
-        <div className="fixed inset-0 z-[0] backdrop-blur-[40px] bg-black/30 pointer-events-none" />
+        {/* Removed: Global Backdrop Blur (GPU Killer) */}
+        {/* Removed: Noise SVG (CPU Killer) */}
+        {/* Removed: GradualBlurs (Composite Killer) */}
 
-        {/* LAYER 3: Mouse Spotlight */}
+        {/* LAYER 3: Mouse Spotlight (Lightweight) */}
         <MouseSpotlight />
 
-        <Noise />
-        
         <Cursor />
 
-        {/* LAYER 4: Cinematic Gradients */}
-        <GradualBlur preset="page-header" zIndex={40} opacity={0.5} />
-        <GradualBlur preset="page-footer" zIndex={40} opacity={0.7} />
-        
         <Navbar />
         
         <main className="relative z-10">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Menu, X, ArrowUpRight, Activity, Globe, Wifi } from 'lucide-react';
 import StarBorder from './ui/StarBorder';
 import { sfx } from '../utils/audio';
@@ -22,14 +22,23 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    let timeoutId: number;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      // Throttle scroll updates
+      if (timeoutId) return;
+      timeoutId = window.setTimeout(() => {
+        setScrolled(window.scrollY > 20);
+        timeoutId = 0;
+      }, 100);
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+        window.removeEventListener('scroll', handleScroll);
+        clearTimeout(timeoutId);
+    };
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLElement>, id: string) => {
+  const handleNavClick = (e: React.MouseEvent, id: string) => {
     sfx.playClick();
     e.preventDefault();
     setIsOpen(false);

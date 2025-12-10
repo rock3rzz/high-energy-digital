@@ -1,21 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { NeonButton } from './ui/NeonButton';
 import { Reveal } from './ui/Reveal';
 import { HyperText } from './ui/HyperText';
 
 const Hero: React.FC = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const layer1Ref = useRef<HTMLDivElement>(null);
+  const layer2Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let frameId: number;
+
     const handleMouseMove = (e: MouseEvent) => {
-      // Normalize mouse position from -1 to 1
-      const x = (e.clientX / window.innerWidth) * 2 - 1;
-      const y = (e.clientY / window.innerHeight) * 2 - 1;
-      setMousePos({ x, y });
+      // Optimize: Only calculate on animation frame
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(() => {
+        const x = (e.clientX / window.innerWidth) * 2 - 1;
+        const y = (e.clientY / window.innerHeight) * 2 - 1;
+
+        if (layer1Ref.current) {
+            // Layer 1 moves opposite to mouse (Background feel)
+            layer1Ref.current.style.transform = `translate(${x * -20}px, ${y * -10}px)`;
+        }
+        if (layer2Ref.current) {
+            // Layer 2 moves with mouse (Foreground feel)
+            layer2Ref.current.style.transform = `translate(${x * 20}px, ${y * 10}px)`;
+        }
+      });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        cancelAnimationFrame(frameId);
+    };
   }, []);
 
   const scrollToContact = () => {
@@ -44,10 +61,10 @@ const Hero: React.FC = () => {
            {/* Main Text Container */}
            <div className="relative w-full">
              
-             {/* NOISE SECTION - Parallax Layer 1 (Moves opposite to mouse) */}
+             {/* NOISE SECTION - Parallax Layer 1 */}
              <div 
+                ref={layer1Ref}
                 className="relative group mb-4 transition-transform duration-100 ease-out will-change-transform"
-                style={{ transform: `translate(${mousePos.x * -20}px, ${mousePos.y * -10}px)` }}
              >
                 <Reveal width="100%">
                   <div className="flex items-center justify-center gap-4 mb-4">
@@ -73,10 +90,10 @@ const Hero: React.FC = () => {
                 </Reveal>
              </div>
 
-             {/* BUSINESS SECTION - Parallax Layer 2 (Moves with mouse) */}
+             {/* BUSINESS SECTION - Parallax Layer 2 */}
              <div 
+                ref={layer2Ref}
                 className="relative mt-4 md:mt-8 transition-transform duration-100 ease-out will-change-transform"
-                style={{ transform: `translate(${mousePos.x * 20}px, ${mousePos.y * 10}px)` }}
              >
                 <Reveal width="100%" delay={300}>
                    <div className="flex items-center justify-center gap-4 mb-4">
