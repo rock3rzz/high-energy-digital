@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>High Energy Digital | Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Manrope"', 'sans-serif'],
+              mono: ['"IBM Plex Mono"', 'monospace'],
+            },
+            colors: {
+              brand: {
+                black: '#030303',
+                white: '#ffffff',
+                neon: '#DE69CB', // Precise Pink
+                cyan: '#00f0ff', // Cyber Cyan
+                dark: '#0a0a0a',
+                grid: '#1a1a1a',
+              }
+            },
+            animation: {
+              'spin-slow': 'spin 20s linear infinite',
+              'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite',
+              'scan-fast': 'scan 2s linear infinite',
+              'grid-scroll': 'grid-scroll 3s linear infinite',
+              'aurora': 'aurora 20s linear infinite',
+              'blob': 'blob 10s infinite',
+              'float': 'float 3s ease-in-out infinite',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'beam': 'beam 3s linear infinite',
+              'shimmer': 'shimmer 2s linear infinite',
+              'sweep': 'sweep 0.8s cubic-bezier(0.4, 0.0, 0.2, 1) forwards',
+            },
+            keyframes: {
+              shake: {
+                '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                '30%, 50%, 70%': { transform: 'translate3d(-2px, 0, 0)' },
+                '40%, 60%': { transform: 'translate3d(2px, 0, 0)' }
+              },
+              scan: {
+                '0%': { top: '-10%' },
+                '100%': { top: '110%' }
+              },
+              beam: {
+                '0%': { top: '-20%', opacity: '0' },
+                '10%': { opacity: '1' },
+                '100%': { top: '120%', opacity: '0' }
+              },
+              shimmer: {
+                '0%': { transform: 'translateX(-100%)' },
+                '100%': { transform: 'translateX(100%)' }
+              },
+              sweep: {
+                '0%': { transform: 'translateX(-100%) skewX(-15deg)' },
+                '100%': { transform: 'translateX(200%) skewX(-15deg)' }
+              },
+              'grid-scroll': {
+                '0%': { transform: 'translateY(0)' },
+                '100%': { transform: 'translateY(calc(50% - 60px))' }
+              },
+              aurora: {
+                '0%': { transform: 'rotate(0deg) scale(1)' },
+                '50%': { transform: 'rotate(180deg) scale(1.1)' },
+                '100%': { transform: 'rotate(360deg) scale(1)' }
+              },
+              blob: {
+                '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' }
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' }
+              }
+            },
+            backgroundImage: {
+              'cyber-grid': "linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px)",
+              'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.4%22/%3E%3C/svg%3E')",
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        background-color: #030303;
+      }
+      
+      html:not(.dark) body {
+        background-color: #f8fafc;
+      }
+      
+      ::selection {
+        background: #DE69CB;
+        color: #ffffff;
+      }
+
+      /* Typography Utilities */
+      .text-stroke {
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+        color: transparent;
+      }
+      
+      .text-stroke-strong {
+        -webkit-text-stroke: 2px rgba(255, 255, 255, 0.2);
+        color: transparent;
+      }
+      
+      .text-stroke-neon {
+        -webkit-text-stroke: 1px #DE69CB;
+        color: transparent;
+        filter: drop-shadow(0 0 2px #DE69CB);
+      }
+
+      .perspective-grid-container {
+        perspective: 200px;
+      }
+      
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #030303;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1a1a1a;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #DE69CB;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.4.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+<<<<<<< HEAD
+</head>
+  <body class="bg-brand-black text-white dark:text-white text-gray-900 transition-colors duration-300">
+    <div id="root"></div>
+  </body>
+=======
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-brand-black text-white dark:text-white text-gray-900 transition-colors duration-300">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+>>>>>>> 1cdd166 (Initial commit)
+</html>

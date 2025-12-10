@@ -1,0 +1,40 @@
+{
+  "name": "high-energy-digital",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+<<<<<<< HEAD
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.554.0",
+    "recharts": "^3.4.1",
+    "react-dom": "^19.2.0",
+    "react": "^19.2.0",
+=======
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "lucide-react": "^0.554.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "recharts": "^3.4.1",
+>>>>>>> 1cdd166 (Initial commit)
+    "three": "0.160.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+<<<<<<< HEAD
+=======
+    "gh-pages": "^6.3.0",
+>>>>>>> 1cdd166 (Initial commit)
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}
