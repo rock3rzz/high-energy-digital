@@ -239,7 +239,7 @@ Error generating stack: `+s.message+`
       }
     }
   `,document.head.appendChild(t)};typeof document<"u"&&Zy();const Ky=({as:o,className:t="",color:i="#DE69CB",speed:r="4s",thickness:l=1,children:u,onMouseEnter:h,onClick:d,...m})=>{const p=o||"button";return b.jsxs(p,{className:`star-border-container ${t}`,onMouseEnter:g=>{Xt.playHover(),h&&h(g)},onClick:g=>{Xt.playClick(),d&&d(g)},...m,children:[b.jsx("div",{className:"border-gradient-bottom",style:{background:`radial-gradient(circle, ${i}, transparent 10%)`,animationDuration:r}}),b.jsx("div",{className:"border-gradient-top",style:{background:`radial-gradient(circle, ${i}, transparent 10%)`,animationDuration:r}}),b.jsx("div",{className:"inner-content",children:u})]})},Qy="/high-energy-digital/assets/HEDlogo-DV3nW9Of.svg",Jy=({className:o=""})=>b.jsx("div",{className:`flex items-center ${o}`,children:b.jsx("img",{src:Qy,alt:"High Energy Digital Logo",className:`
-          w-44 md:w-60
+          w-56 md:w-80
           h-auto 
           object-contain 
           select-none 
