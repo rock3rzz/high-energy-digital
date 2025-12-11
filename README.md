@@ -1,20 +1,57 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# ⚡ High Energy Digital — Web Experience
 
-# Run and deploy your AI Studio app
+Welcome to the source code powering the **High Energy Digital** website.  
+This repo contains the frontend, assets, animations and build pipeline for our immersive, high-performance digital agency experience.
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/drive/1p2gJ57mpBC8GvWR8vxr5AhkOeXwD11YJ
+## 🚀 Tech Stack
+- **React + TypeScript**
+- **Vite** (ultra-fast bundler)
+- **TailwindCSS** (custom extended config)
+- **Framer Motion / Custom Animations**
+- **Optimized static deployment on GitHub Pages**
 
-## Run Locally
+---
 
-**Prerequisites:**  Node.js
+## 🧱 Project Structure
+/src
+/components → UI sections + animations
+/utils → helpers, configs, hooks
+App.tsx → main application shell
+index.tsx → entry point
+public/
+favicon/ → full favicon set
+og-image.jpg → social preview image
 
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+This folder is deployed automatically via GitHub Pages.
+
+---
+
+## 🌍 Deployment
+
+The site is deployed at:
+
+**https://highenergydigital.com**
+
+Configured via:
+- Custom domain  
+- A-records → GitHub Pages IPs  
+- CNAME → `highenergydigital.com`
+
+---
+
+## 🎨 Branding
+
+All visual elements follow the HED identity:
+- Black / deep-gradient backgrounds  
+- Cyber-pink `#DE69CB`  
+- Cyan accent `#00F0FF`  
+- Clean futuristic typography  
+- High-contrast hero messaging  
+
+If you update brand assets, replace them inside `/public/assets` and rebuild.
+
+---
+
